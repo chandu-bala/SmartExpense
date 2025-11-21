@@ -6,6 +6,9 @@ import Expenses from "./pages/Expenses";
 import Profile from "./pages/Profile";
 import NavBar from "./components/NavBar";
 import ProtectedRoute from "./components/ProtectedRoute";
+import Landing from "./pages/Landing";
+
+<Route path="/" element={<Landing />} />
 
 export default function App() {
   return (
@@ -13,6 +16,7 @@ export default function App() {
       <NavBar />
       <div className="container">
         <Routes>
+          <Route path="/" element={<Landing />} />
           <Route path="/" element={<Navigate to="/login" />} />
           <Route path="/login" element={<Login />} />
           <Route path="/signup" element={<Signup />} />
