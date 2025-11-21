@@ -4,10 +4,10 @@ export default function Profile() {
   const { user } = useAuth();
 
   return (
-    <div className="bg-white p-6 rounded shadow">
-      <h2 className="text-xl font-bold">Profile</h2>
-      <p>Name: {user?.name}</p>
-      <p>Email: {user?.email}</p>
+    <div className="card">
+      <h2>Profile</h2>
+      <p><strong>Name:</strong> {user?.name}</p>
+      <p><strong>Email:</strong> {user?.email}</p>
     </div>
   );
 }

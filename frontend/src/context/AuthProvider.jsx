@@ -3,24 +3,43 @@ import api from "../services/api";
 import { AuthContext } from "./AuthContext";
 
 export const AuthProvider = ({ children }) => {
-  const [user, setUser] = useState(
-    localStorage.getItem("user")
-      ? JSON.parse(localStorage.getItem("user"))
-      : null
-  );
+  const [user, setUser] = useState(() => {
+    const stored = localStorage.getItem("user");
+    return stored ? JSON.parse(stored) : null;
+  });
 
   const login = async (email, password) => {
-    const res = await api.post("/auth/login", { email, password });
-    localStorage.setItem("token", res.data.data.token);
-    localStorage.setItem("user", JSON.stringify(res.data.data.user));
-    setUser(res.data.data.user);
+    try {
+      const res = await api.post("/auth/login", { email, password });
+
+      const { token, user } = res.data.data;
+
+      localStorage.setItem("token", token);
+      localStorage.setItem("user", JSON.stringify(user));
+
+      setUser(user);
+      return true; // ✅ important for redirect
+    } catch (error) {
+      console.error("Login failed:", error);
+      return false;
+    }
   };
 
   const signup = async (name, email, password) => {
-    const res = await api.post("/auth/register", { name, email, password });
-    localStorage.setItem("token", res.data.data.token);
-    localStorage.setItem("user", JSON.stringify(res.data.data.user));
-    setUser(res.data.data.user);
+    try {
+      const res = await api.post("/auth/register", { name, email, password });
+
+      const { token, user } = res.data.data;
+
+      localStorage.setItem("token", token);
+      localStorage.setItem("user", JSON.stringify(user));
+
+      setUser(user);
+      return true;
+    } catch (error) {
+      console.error("Signup failed:", error);
+      return false;
+    }
   };
 
   const logout = () => {
